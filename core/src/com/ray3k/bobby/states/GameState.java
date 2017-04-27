@@ -21,16 +21,17 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.ray3k.bobby;
+package com.ray3k.bobby.states;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.ray3k.bobby.State;
 
-public class StateManager {
+public class GameState implements State {
+    @Override
     public void draw(SpriteBatch spriteBatch) {
-        
     }
-    
+
+    @Override
     public void render(float delta) {
-        
     }
 }
