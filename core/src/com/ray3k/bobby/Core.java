@@ -24,19 +24,20 @@
 package com.ray3k.bobby;
 
 import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.assets.loaders.PixmapLoader;
+import com.badlogic.gdx.assets.loaders.resolvers.LocalFileHandleResolver;
+import com.badlogic.gdx.graphics.Pixmap;
 
 public class Core extends ApplicationAdapter {
-    Viewport viewport;
-    OrthographicCamera camera;
-
+    private AssetManager assetManager;
+    //put skin here too.
+    
     @Override
     public void create() {
-        viewport = new ScreenViewport();
-        camera = new OrthographicCamera();
-        viewport.setCamera(camera);
+        assetManager = new AssetManager(new LocalFileHandleResolver(), false);
+        assetManager.setLoader(Pixmap.class, new PixmapLoader(assetManager.getFileHandleResolver()));
+        assetManager.load("test", Pixmap.class);
     }
 
     @Override
@@ -46,6 +47,6 @@ public class Core extends ApplicationAdapter {
 
     @Override
     public void dispose() {
-
+        assetManager.dispose();
     }
 }

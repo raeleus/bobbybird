@@ -28,10 +28,18 @@ import com.ray3k.bobby.State;
 
 public class CreditsState implements State {
     @Override
+    public void create() {
+    }
+    
+    @Override
     public void draw(SpriteBatch spriteBatch) {
     }
 
     @Override
-    public void render(float delta) {
+    public void act(float delta) {
+    }
+
+    @Override
+    public void dispose() {
     }
 }

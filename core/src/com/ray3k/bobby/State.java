@@ -26,7 +26,8 @@ package com.ray3k.bobby;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public interface State {
+    public void create();
     public void draw(SpriteBatch spriteBatch);
-    
-    public void render(float delta);
+    public void act(float delta);
+    public void dispose();
 }
