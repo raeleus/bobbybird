@@ -23,14 +23,56 @@
  */
 package com.ray3k.bobby;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.ObjectMap;
 
 public class StateManager {
-    public void draw(SpriteBatch spriteBatch) {
-        
+    private final ObjectMap<String, State> states;
+    private State loadedState;
+    
+    public StateManager() {
+        states = new ObjectMap<String, State>();
     }
     
-    public void render(float delta) {
+    public void addState(String name, State state) {
+        states.put(name, state);
+    }
+    
+    public void draw(SpriteBatch spriteBatch, float delta) {
+        if (loadedState != null) {
+            loadedState.draw(spriteBatch, delta);
+        }
+    }
+    
+    public void act(float delta) {
+        if (loadedState != null) {
+            loadedState.act(delta);
+        }
+    }
+    
+    public void dispose() {
+        for (State state : states.values()) {
+            state.dispose();
+        }
+    }
+    
+    public void loadState(String name) {
+        unloadState();
         
+        if (name != null) {
+            loadedState = states.get(name);
+            if (loadedState == null) {
+                Gdx.app.error(StateManager.class.getName(), "State does not exist: " + name);
+            }
+            loadedState.start();
+        }
+    }
+    
+    public void unloadState() {
+        if (loadedState != null) {
+            loadedState.stop();
+            loadedState = null;
+        }
     }
 }

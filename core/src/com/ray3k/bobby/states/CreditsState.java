@@ -28,11 +28,11 @@ import com.ray3k.bobby.State;
 
 public class CreditsState implements State {
     @Override
-    public void create() {
+    public void start() {
     }
     
     @Override
-    public void draw(SpriteBatch spriteBatch) {
+    public void draw(SpriteBatch spriteBatch, float delta) {
     }
 
     @Override
@@ -41,5 +41,9 @@ public class CreditsState implements State {
 
     @Override
     public void dispose() {
+    }
+
+    @Override
+    public void stop() {
     }
 }

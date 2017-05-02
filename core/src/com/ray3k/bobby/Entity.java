@@ -24,11 +24,30 @@
 package com.ray3k.bobby;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 
-public interface State {
-    public void start();
-    public void draw(SpriteBatch spriteBatch, float delta);
-    public void act(float delta);
-    public void stop();
-    public void dispose();
+public class Entity {
+    private Vector2 position;
+    private Vector2 speed;
+
+    public Entity() {
+        position = new Vector2();
+        speed = new Vector2();
+    }
+    
+    public void create() {
+        
+    }
+    
+    public void act(float delta) {
+        
+    }
+    
+    public void draw(SpriteBatch spriteBatch, float delta) {
+        
+    }
+    
+    public void dispose() {
+        
+    }
 }

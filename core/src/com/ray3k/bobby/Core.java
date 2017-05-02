@@ -24,29 +24,124 @@
 package com.ray3k.bobby;
 
 import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.PixmapLoader;
+import com.badlogic.gdx.assets.loaders.SkinLoader;
 import com.badlogic.gdx.assets.loaders.resolvers.LocalFileHandleResolver;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.g2d.PixmapPacker;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.ObjectMap;
+import com.badlogic.gdx.utils.TimeUtils;
+import com.ray3k.bobby.states.CreditsState;
+import com.ray3k.bobby.states.GameState;
+import com.ray3k.bobby.states.LoadingState;
+import com.ray3k.bobby.states.MenuState;
 
 public class Core extends ApplicationAdapter {
+    public final static String VERSION = "1";
+    public final static String DATA_PATH = "bobby_data";
+    private final static long MS_PER_UPDATE = 10;
+    public static Core core;
     private AssetManager assetManager;
-    //put skin here too.
+    private StateManager stateManager;
+    private SpriteBatch spriteBatch;
+    private PixmapPacker pixmapPacker;
+    private ObjectMap<String, Array<String>> imagePacks;
+    private long previous;
+    private long lag;
     
     @Override
     public void create() {
+        core = this;
+        
+        initManagers();
+        
+        createLocalFiles();
+        
+        loadAssets();
+        
+        previous = TimeUtils.millis();
+        lag = 0;
+        
+        stateManager.loadState("loading");
+    }
+    
+    public void initManagers() {
         assetManager = new AssetManager(new LocalFileHandleResolver(), false);
         assetManager.setLoader(Pixmap.class, new PixmapLoader(assetManager.getFileHandleResolver()));
-        assetManager.load("test", Pixmap.class);
+        assetManager.setLoader(Skin.class, new SkinLoader(assetManager.getFileHandleResolver()));
+        
+        imagePacks = new ObjectMap<String, Array<String>>();
+        for (String name : new String[] {"characters", "obstacles", "grounds", "clouds", "bushes", "buildings"}) {
+            imagePacks.put(name, new Array<String>());
+        }
+        
+        stateManager = new StateManager();
+        stateManager.addState("loading", new LoadingState("menu"));
+        stateManager.addState("menu", new MenuState());
+        stateManager.addState("game", new GameState());
+        stateManager.addState("credits", new CreditsState());
+        
+        spriteBatch = new SpriteBatch();
+        
+        pixmapPacker = new PixmapPacker(1024, 1024, Pixmap.Format.RGBA8888, 5, true, new PixmapPacker.GuillotineStrategy());
     }
-
+    
     @Override
     public void render() {
-
+        long current = TimeUtils.millis();
+        long elapsed = current - previous;
+        previous = current;
+        lag += elapsed;
+        
+        while (lag >= MS_PER_UPDATE) {
+            stateManager.act(MS_PER_UPDATE / 1000.0f);
+            lag -= MS_PER_UPDATE;
+        }
+        
+        stateManager.draw(spriteBatch, lag);
     }
 
     @Override
     public void dispose() {
         assetManager.dispose();
+        stateManager.dispose();
+    }
+    
+    public void createLocalFiles() {
+        for (String name : imagePacks.keys()) {
+            Gdx.files.local(DATA_PATH + "/" + name).mkdirs();
+        }
+        
+        if (!Gdx.files.local("skin/skin.json").exists()) {
+            Gdx.files.internal("skin").copyTo(Gdx.files.local(DATA_PATH + "/skin"));
+        }
+    }
+    
+    public void loadAssets() {
+        assetManager.clear();
+        
+//        assetManager.load("skin/skin.json", Skin.class);
+        
+        for (String name : imagePacks.keys()) {
+            FileHandle folder = Gdx.files.local(DATA_PATH + "/" + name);
+            for (FileHandle file : folder.list()) {
+                assetManager.load(file.path(), Pixmap.class);
+                imagePacks.get(name).add(file.nameWithoutExtension());
+            }
+        }
+    }
+    
+    public AssetManager getAssetManager() {
+        return assetManager;
+    }
+
+    public StateManager getStateManager() {
+        return stateManager;
     }
 }

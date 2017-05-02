@@ -23,30 +23,17 @@
  */
 package com.ray3k.bobby.states;
 
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
 import com.ray3k.bobby.State;
 
 public class GameState implements State {
-    private Viewport viewport;
-    private OrthographicCamera camera;
-    private Stage stage;
-    private Skin skin;
     
     @Override
-    public void create() {
-        viewport = new ScreenViewport();
-        camera = new OrthographicCamera();
-        viewport.setCamera(camera);
-        stage = new Stage(new ScreenViewport());
+    public void start() {
     }
     
     @Override
-    public void draw(SpriteBatch spriteBatch) {
+    public void draw(SpriteBatch spriteBatch, float delta) {
         
     }
 
@@ -56,7 +43,9 @@ public class GameState implements State {
 
     @Override
     public void dispose() {
-        stage.dispose();
-        skin.dispose();
+    }
+
+    @Override
+    public void stop() {
     }
 }

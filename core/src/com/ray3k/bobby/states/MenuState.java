@@ -24,33 +24,32 @@
 package com.ray3k.bobby.states;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.ray3k.bobby.State;
 
 public class MenuState implements State {
-    private Stage stage;
-    private Skin skin;
+
     
     @Override
-    public void create() {
-        stage = new Stage(new ScreenViewport());
+    public void start() {
+
     }
     
     @Override
-    public void draw(SpriteBatch spriteBatch) {
-        stage.draw();
+    public void draw(SpriteBatch spriteBatch, float delta) {
+
     }
 
     @Override
     public void act(float delta) {
-        stage.act();
+
     }
 
     @Override
     public void dispose() {
-        stage.dispose();
-        skin.dispose();
+
+    }
+
+    @Override
+    public void stop() {
     }
 }
