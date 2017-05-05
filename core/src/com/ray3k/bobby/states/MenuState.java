@@ -23,17 +23,60 @@
  */
 package com.ray3k.bobby.states;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.utils.JsonReader;
+import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.ray3k.bobby.Core;
 import com.ray3k.bobby.State;
 
 public class MenuState implements State {
     private Stage stage;
+    private Skin skin;
     
     @Override
     public void start() {
+        skin = Core.core.getAssetManager().get("skin/skin.json", Skin.class);
         stage = new Stage(new ScreenViewport());
+        
+        Gdx.input.setInputProcessor(stage);
+        
+        Image bg = new Image(skin, "sky");
+        bg.setFillParent(true);
+        stage.addActor(bg);
+        
+        Table root = new Table();
+        root.setFillParent(true);
+        stage.addActor(root);
+        
+        FileHandle fileHandle = Gdx.files.local("bobby_data/data.json");
+        JsonReader reader = new JsonReader();
+        JsonValue val = reader.parse(fileHandle);
+        
+        Label title = new Label(val.getString("title"), skin, "title");
+        root.add(title);
+        
+        root.row();
+        ImageButton imageButton = new  ImageButton(skin, "play");
+        root.add(imageButton);
+        imageButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeListener.ChangeEvent event, Actor actor) {
+                Core.core.getStateManager().loadState("game");
+            }
+        });
+        
+        
     }
     
     @Override
@@ -48,10 +91,16 @@ public class MenuState implements State {
 
     @Override
     public void dispose() {
-        stage.dispose();
+        
     }
 
     @Override
     public void stop() {
+        stage.dispose();
+    }
+    
+    @Override
+    public void resize(int width, int height) {
+        stage.getViewport().update(width, height, true);
     }
 }

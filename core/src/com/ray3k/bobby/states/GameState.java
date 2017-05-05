@@ -48,4 +48,8 @@ public class GameState implements State {
     @Override
     public void stop() {
     }
+    
+    @Override
+    public void resize(int width, int height) {
+    }
 }

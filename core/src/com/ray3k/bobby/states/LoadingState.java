@@ -6,7 +6,10 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.DelayAction;
+import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar.ProgressBarStyle;
@@ -24,6 +27,7 @@ public class LoadingState implements State {
     private Skin skin;
     private ProgressBar progressBar;
     private String nextState;
+    private Table root;
     
     public LoadingState(String nextState) {
         this.nextState = nextState;
@@ -48,7 +52,7 @@ public class LoadingState implements State {
         image.setFillParent(true);
         stage.addActor(image);
         
-        Table root = new Table();
+        root = new Table();
         root.setFillParent(true);
         stage.addActor(root);
         
@@ -68,7 +72,14 @@ public class LoadingState implements State {
         progressBar.setValue(assetManager.getProgress());
         stage.act(delta);
         if (assetManager.update()) {
-            Core.core.getStateManager().loadState(nextState);
+            Action changeStateAction = new Action() {
+                @Override
+                public boolean act(float delta) {
+                    Core.core.getStateManager().loadState(nextState);
+                    return true;
+                }
+            };
+            root.addAction(new SequenceAction(new DelayAction(1.0f), changeStateAction));
         }
     }
 
@@ -105,5 +116,10 @@ public class LoadingState implements State {
     public void stop() {
         stage.dispose();
         skin.dispose();
+    }
+    
+    @Override
+    public void resize(int width, int height) {
+        stage.getViewport().update(width, height, true);
     }
 }

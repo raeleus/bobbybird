@@ -1,0 +1,121 @@
+
+skin.png
+size: 2048,2048
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+box
+  rotate: false
+  xy: 1083, 1382
+  size: 58, 58
+  split: 15, 14, 15, 14
+  pad: 17, 16, 17, 16
+  orig: 58, 58
+  offset: 0, 0
+  index: -1
+button
+  rotate: false
+  xy: 1, 34
+  size: 113, 73
+  split: 18, 18, 18, 20
+  pad: 20, 20, 3, 5
+  orig: 113, 73
+  offset: 0, 0
+  index: -1
+button-pressed
+  rotate: false
+  xy: 1083, 1442
+  size: 113, 73
+  split: 18, 18, 18, 20
+  pad: 20, 20, 5, 3
+  orig: 113, 73
+  offset: 0, 0
+  index: -1
+flag
+  rotate: false
+  xy: 696, 951
+  size: 28, 19
+  split: 2, 13, 0, 0
+  pad: 3, 13, 2, 2
+  orig: 28, 19
+  offset: 0, 0
+  index: -1
+flag-reversed
+  rotate: false
+  xy: 1198, 1496
+  size: 28, 19
+  split: 13, 2, 0, 0
+  pad: 13, 3, 2, 2
+  orig: 28, 19
+  offset: 0, 0
+  index: -1
+font-export
+  rotate: false
+  xy: 548, 845
+  size: 93, 94
+  orig: 93, 94
+  offset: 0, 0
+  index: -1
+font-game-over-export
+  rotate: false
+  xy: 1, 954
+  size: 545, 561
+  orig: 545, 561
+  offset: 0, 0
+  index: -1
+font-get-ready-export
+  rotate: false
+  xy: 1, 391
+  size: 545, 561
+  orig: 545, 561
+  offset: 0, 0
+  index: -1
+font-score-export
+  rotate: false
+  xy: 1, 109
+  size: 278, 280
+  orig: 278, 280
+  offset: 0, 0
+  index: -1
+font-summary-export
+  rotate: false
+  xy: 281, 290
+  size: 98, 99
+  orig: 98, 99
+  offset: 0, 0
+  index: -1
+font-title-export
+  rotate: false
+  xy: 548, 972
+  size: 533, 543
+  orig: 533, 543
+  offset: 0, 0
+  index: -1
+hand
+  rotate: false
+  xy: 1, 1
+  size: 20, 31
+  orig: 20, 31
+  offset: 0, 0
+  index: -1
+play-icon
+  rotate: false
+  xy: 116, 75
+  size: 16, 32
+  orig: 16, 32
+  offset: 0, 0
+  index: -1
+spacebar
+  rotate: false
+  xy: 548, 941
+  size: 146, 29
+  orig: 146, 29
+  offset: 0, 0
+  index: -1
+white
+  rotate: false
+  xy: 281, 287
+  size: 1, 1
+  orig: 1, 1
+  offset: 0, 0
+  index: -1
