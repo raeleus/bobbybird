@@ -1,0 +1,55 @@
+{
+com.badlogic.gdx.graphics.g2d.BitmapFont: {
+	font: {
+		file: font-export.fnt
+	}
+	game-over: {
+		file: font-game-over-export.fnt
+	}
+	get-ready: {
+		file: font-get-ready-export.fnt
+	}
+	score: {
+		file: font-score-export.fnt
+	}
+	summary: {
+		file: font-summary-export.fnt
+	}
+	title: {
+		file: font-title-export.fnt
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
+	default: {
+		font: font
+	}
+	flag: {
+		font: font
+		background: flag
+	}
+	flag-reversed: {
+		font: font
+		background: flag-reversed
+	}
+	game-over: {
+		font: game-over
+	}
+	get-ready: {
+		font: get-ready
+	}
+	score: {
+		font: score
+	}
+	summary: {
+		font: summary
+	}
+	title: {
+		font: title
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.TextTooltip$TextTooltipStyle: {
+	default: {
+		label: default
+	}
+}
+}

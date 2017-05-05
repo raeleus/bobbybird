@@ -1,0 +1,89 @@
+
+bobby-bird-skin.png
+size: 2048,2048
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+box
+  rotate: false
+  xy: 281, 319
+  size: 58, 58
+  split: 15, 14, 15, 14
+  pad: 17, 16, 17, 16
+  orig: 58, 58
+  offset: 0, 0
+  index: -1
+flag
+  rotate: false
+  xy: 548, 908
+  size: 28, 19
+  split: 2, 13, 0, 0
+  pad: 3, 13, 2, 2
+  orig: 28, 19
+  offset: 0, 0
+  index: -1
+flag-reversed
+  rotate: false
+  xy: 696, 939
+  size: 28, 19
+  split: 13, 2, 0, 0
+  pad: 13, 3, 2, 2
+  orig: 28, 19
+  offset: 0, 0
+  index: -1
+font-export
+  rotate: false
+  xy: 1, 1
+  size: 93, 94
+  orig: 93, 94
+  offset: 0, 0
+  index: -1
+font-game-over-export
+  rotate: false
+  xy: 1, 942
+  size: 545, 561
+  orig: 545, 561
+  offset: 0, 0
+  index: -1
+font-get-ready-export
+  rotate: false
+  xy: 1, 379
+  size: 545, 561
+  orig: 545, 561
+  offset: 0, 0
+  index: -1
+font-score-export
+  rotate: false
+  xy: 1, 97
+  size: 278, 280
+  orig: 278, 280
+  offset: 0, 0
+  index: -1
+font-summary-export
+  rotate: false
+  xy: 1083, 1404
+  size: 98, 99
+  orig: 98, 99
+  offset: 0, 0
+  index: -1
+font-title-export
+  rotate: false
+  xy: 548, 960
+  size: 533, 543
+  orig: 533, 543
+  offset: 0, 0
+  index: -1
+hand
+  rotate: false
+  xy: 1083, 1371
+  size: 20, 31
+  orig: 20, 31
+  offset: 0, 0
+  index: -1
+spacebar
+  rotate: false
+  xy: 548, 929
+  size: 146, 29
+  orig: 146, 29
+  offset: 0, 0
+  index: -1
