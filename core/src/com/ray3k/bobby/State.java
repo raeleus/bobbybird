@@ -31,4 +31,5 @@ public interface State {
     public void act(float delta);
     public void stop();
     public void dispose();
+    public void resize(int width, int height);
 }

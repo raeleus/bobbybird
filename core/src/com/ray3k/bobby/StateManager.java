@@ -75,4 +75,18 @@ public class StateManager {
             loadedState = null;
         }
     }
+    
+    public void removeState(State state) {
+        removeState(states.findKey(state, true));
+    }
+    
+    public void removeState(String name) {
+        states.remove(name);
+    }
+
+    void resize(int width, int height) {
+        if (loadedState != null) {
+            loadedState.resize(width, height);
+        }
+    }
 }

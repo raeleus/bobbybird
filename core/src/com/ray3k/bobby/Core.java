@@ -136,6 +136,21 @@ public class Core extends ApplicationAdapter {
             }
         }
     }
+
+    @Override
+    public void resume() {
+        
+    }
+
+    @Override
+    public void pause() {
+        
+    }
+
+    @Override
+    public void resize(int width, int height) {
+        stateManager.resize(width, height);
+    }
     
     public AssetManager getAssetManager() {
         return assetManager;
