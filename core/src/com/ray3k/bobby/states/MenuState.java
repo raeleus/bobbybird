@@ -26,8 +26,11 @@ package com.ray3k.bobby.states;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.DelayAction;
+import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -43,6 +46,7 @@ import com.ray3k.bobby.State;
 public class MenuState implements State {
     private Stage stage;
     private Skin skin;
+    private Table root;
     
     @Override
     public void start() {
@@ -55,7 +59,7 @@ public class MenuState implements State {
         bg.setFillParent(true);
         stage.addActor(bg);
         
-        Table root = new Table();
+        root = new Table();
         root.setFillParent(true);
         stage.addActor(root);
         
@@ -72,11 +76,17 @@ public class MenuState implements State {
         imageButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeListener.ChangeEvent event, Actor actor) {
-                Core.core.getStateManager().loadState("game");
+                Gdx.input.setInputProcessor(null);
+                Action changeStateAction = new Action() {
+                    @Override
+                    public boolean act(float delta) {
+                        Core.core.getStateManager().loadState("game");
+                        return true;
+                    }
+                };
+                root.addAction(new SequenceAction(new DelayAction(1.0f), changeStateAction));
             }
         });
-        
-        
     }
     
     @Override
