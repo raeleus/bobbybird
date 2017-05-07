@@ -27,10 +27,12 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.resolvers.LocalFileHandleResolver;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.PixmapPacker;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
@@ -51,6 +53,7 @@ public class Core extends ApplicationAdapter {
     private ObjectMap<String, Array<String>> imagePacks;
     private long previous;
     private long lag;
+    private TextureAtlas atlas;
     
     @Override
     public void create() {
@@ -104,6 +107,10 @@ public class Core extends ApplicationAdapter {
     public void dispose() {
         assetManager.dispose();
         stateManager.dispose();
+        pixmapPacker.dispose();
+        if (atlas != null) {
+            atlas.dispose();
+        }
     }
     
     public void createLocalFiles() {
@@ -117,6 +124,20 @@ public class Core extends ApplicationAdapter {
         
         if (!Gdx.files.local(DATA_PATH + "/data.json").exists()) {
             Gdx.files.internal("data.json").copyTo(Gdx.files.local(DATA_PATH));
+        }
+        
+        Gdx.files.local(DATA_PATH + "/sfx/").mkdirs();
+        
+        if (!Gdx.files.local(DATA_PATH + "/sfx/coin.wav").exists()) {
+            Gdx.files.internal("sfx/coin.wav").copyTo(Gdx.files.local(DATA_PATH + "/sfx/"));
+        }
+        
+        if (!Gdx.files.local(DATA_PATH + "/sfx/hit.wav").exists()) {
+            Gdx.files.internal("sfx/hit.wav").copyTo(Gdx.files.local(DATA_PATH + "/sfx/"));
+        }
+        
+        if (!Gdx.files.local(DATA_PATH + "/sfx/jump.wav").exists()) {
+            Gdx.files.internal("sfx/jump.wav").copyTo(Gdx.files.local(DATA_PATH + "/sfx/"));
         }
     }
     
@@ -132,6 +153,10 @@ public class Core extends ApplicationAdapter {
                 imagePacks.get(directory).add(file.name());
             }
         }
+        
+        assetManager.load(DATA_PATH + "/sfx/coin.wav", Sound.class);
+        assetManager.load(DATA_PATH + "/sfx/hit.wav", Sound.class);
+        assetManager.load(DATA_PATH + "/sfx/jump.wav", Sound.class);
     }
 
     @Override
@@ -163,5 +188,13 @@ public class Core extends ApplicationAdapter {
 
     public ObjectMap<String, Array<String>> getImagePacks() {
         return imagePacks;
+    }
+
+    public TextureAtlas getAtlas() {
+        return atlas;
+    }
+
+    public void setAtlas(TextureAtlas atlas) {
+        this.atlas = atlas;
     }
 }

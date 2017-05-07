@@ -1,10 +1,13 @@
 package com.ray3k.bobby.states;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -121,9 +124,12 @@ public class LoadingState extends State {
     private void packPixmaps() {
         for (String directory : getCore().getImagePacks().keys()) {
             for (String name : getCore().getImagePacks().get(directory)) {
-                getCore().getPixmapPacker().pack(getCore().getAssetManager().get(directory + "/" + name, Pixmap.class));
+                FileHandle file = Gdx.files.local(directory + "/" + name);
+                getCore().getPixmapPacker().pack(file.nameWithoutExtension(), getCore().getAssetManager().get(file.path(), Pixmap.class));
             }
         }
+        TextureAtlas atlas = getCore().getPixmapPacker().generateTextureAtlas(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear, false);
+        getCore().setAtlas(atlas);
     }
 
     @Override

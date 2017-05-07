@@ -28,8 +28,8 @@ com.badlogic.gdx.graphics.Color: {
 	}
 	sky: {
 		r: 0
-		g: 0.9883888
-		b: 1
+		g: 0.44313726
+		b: 0.7372549
 		a: 1
 	}
 }

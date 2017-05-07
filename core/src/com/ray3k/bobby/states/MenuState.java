@@ -26,6 +26,7 @@ package com.ray3k.bobby.states;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -51,6 +52,7 @@ public class MenuState extends State {
     public MenuState(Core core) {
         super(core);
     }
+    
     @Override
     public void start() {
         skin = getCore().getAssetManager().get(Core.DATA_PATH + "/skin/skin.json", Skin.class);
@@ -62,34 +64,9 @@ public class MenuState extends State {
         bg.setFillParent(true);
         stage.addActor(bg);
         
-        root = new Table();
-        root.setFillParent(true);
-        stage.addActor(root);
+        createClouds();
         
-        FileHandle fileHandle = Gdx.files.local(Core.DATA_PATH + "/data.json");
-        JsonReader reader = new JsonReader();
-        JsonValue val = reader.parse(fileHandle);
-        
-        Label title = new Label(val.getString("title"), skin, "title");
-        root.add(title);
-        
-        root.row();
-        ImageButton imageButton = new  ImageButton(skin, "play");
-        root.add(imageButton);
-        imageButton.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeListener.ChangeEvent event, Actor actor) {
-                Gdx.input.setInputProcessor(null);
-                Action changeStateAction = new Action() {
-                    @Override
-                    public boolean act(float delta) {
-                        getCore().getStateManager().loadState("game");
-                        return true;
-                    }
-                };
-                root.addAction(new SequenceAction(new DelayAction(1.0f), changeStateAction));
-            }
-        });
+        createMenu();
     }
     
     @Override
@@ -115,5 +92,44 @@ public class MenuState extends State {
     @Override
     public void resize(int width, int height) {
         stage.getViewport().update(width, height, true);
+    }
+    
+    private Image createClouds() {
+        Image image = new Image(getCore().getAtlas().findRegion("cloud"));
+        stage.addActor(image);
+        
+        
+        return image;
+    }
+    
+    private void createMenu() {
+        root = new Table();
+        root.setFillParent(true);
+        stage.addActor(root);
+        
+        FileHandle fileHandle = Gdx.files.local(Core.DATA_PATH + "/data.json");
+        JsonReader reader = new JsonReader();
+        JsonValue val = reader.parse(fileHandle);
+        
+        Label title = new Label(val.getString("title"), skin, "title");
+        root.add(title);
+        
+        root.row();
+        ImageButton imageButton = new  ImageButton(skin, "play");
+        root.add(imageButton).padTop(100.0f);
+        imageButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeListener.ChangeEvent event, Actor actor) {
+                Gdx.input.setInputProcessor(null);
+                Action changeStateAction = new Action() {
+                    @Override
+                    public boolean act(float delta) {
+                        getCore().getStateManager().loadState("game");
+                        return true;
+                    }
+                };
+                root.addAction(new SequenceAction(new DelayAction(1.0f), changeStateAction));
+            }
+        });
     }
 }
