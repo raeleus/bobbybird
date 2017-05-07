@@ -17,6 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.ray3k.bobby.Core;
@@ -28,6 +29,7 @@ public class LoadingState implements State {
     private ProgressBar progressBar;
     private String nextState;
     private Table root;
+    private boolean finishedLoading;
     
     public LoadingState(String nextState) {
         this.nextState = nextState;
@@ -43,6 +45,8 @@ public class LoadingState implements State {
     
     @Override
     public void start() {
+        finishedLoading = false;
+        
         stage = new Stage(new ScreenViewport());
         
         skin = createSkin();
@@ -71,10 +75,12 @@ public class LoadingState implements State {
         AssetManager assetManager = Core.core.getAssetManager();
         progressBar.setValue(assetManager.getProgress());
         stage.act(delta);
-        if (assetManager.update()) {
+        if (!finishedLoading && assetManager.update()) {
             Action changeStateAction = new Action() {
                 @Override
                 public boolean act(float delta) {
+                    finishedLoading = true;
+                    packPixmaps();
                     Core.core.getStateManager().loadState(nextState);
                     return true;
                 }
@@ -110,6 +116,18 @@ public class LoadingState implements State {
         returnValue.add("default-horizontal", progressBarStyle);
         
         return returnValue;
+    }
+    
+    private void packPixmaps() {
+        for (String name : Core.core.getAssetManager().getAssetNames()) {
+            System.out.println(name);
+        }
+        
+        for (String directory : Core.core.getImagePacks().keys()) {
+            for (String name : Core.core.getImagePacks().get(directory)) {
+                Core.core.getPixmapPacker().pack(Core.core.getAssetManager().get(directory + "/" + name, Pixmap.class));
+            }
+        }
     }
 
     @Override

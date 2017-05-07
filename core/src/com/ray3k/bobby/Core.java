@@ -74,7 +74,7 @@ public class Core extends ApplicationAdapter {
         
         imagePacks = new ObjectMap<String, Array<String>>();
         for (String name : new String[] {"characters", "obstacles", "grounds", "clouds", "bushes", "buildings"}) {
-            imagePacks.put(name, new Array<String>());
+            imagePacks.put(DATA_PATH + "/" + name, new Array<String>());
         }
         
         stateManager = new StateManager();
@@ -110,8 +110,8 @@ public class Core extends ApplicationAdapter {
     }
     
     public void createLocalFiles() {
-        for (String name : imagePacks.keys()) {
-            Gdx.files.local(DATA_PATH + "/" + name).mkdirs();
+        for (String directory : imagePacks.keys()) {
+            Gdx.files.local(directory).mkdirs();
         }
         
         if (!Gdx.files.local(DATA_PATH + "/skin/skin.json").exists()) {
@@ -126,13 +126,13 @@ public class Core extends ApplicationAdapter {
     public void loadAssets() {
         assetManager.clear();
         
-        assetManager.load("skin/skin.json", Skin.class);
+        assetManager.load(DATA_PATH + "/skin/skin.json", Skin.class);
         
-        for (String name : imagePacks.keys()) {
-            FileHandle folder = Gdx.files.local(DATA_PATH + "/" + name);
+        for (String directory : imagePacks.keys()) {
+            FileHandle folder = Gdx.files.local(directory);
             for (FileHandle file : folder.list()) {
                 assetManager.load(file.path(), Pixmap.class);
-                imagePacks.get(name).add(file.nameWithoutExtension());
+                imagePacks.get(directory).add(file.name());
             }
         }
     }
@@ -158,5 +158,13 @@ public class Core extends ApplicationAdapter {
 
     public StateManager getStateManager() {
         return stateManager;
+    }
+
+    public PixmapPacker getPixmapPacker() {
+        return pixmapPacker;
+    }
+
+    public ObjectMap<String, Array<String>> getImagePacks() {
+        return imagePacks;
     }
 }

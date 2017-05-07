@@ -50,7 +50,7 @@ public class MenuState implements State {
     
     @Override
     public void start() {
-        skin = Core.core.getAssetManager().get("skin/skin.json", Skin.class);
+        skin = Core.core.getAssetManager().get(Core.DATA_PATH + "/skin/skin.json", Skin.class);
         stage = new Stage(new ScreenViewport());
         
         Gdx.input.setInputProcessor(stage);
@@ -63,7 +63,7 @@ public class MenuState implements State {
         root.setFillParent(true);
         stage.addActor(root);
         
-        FileHandle fileHandle = Gdx.files.local("bobby_data/data.json");
+        FileHandle fileHandle = Gdx.files.local(Core.DATA_PATH + "/data.json");
         JsonReader reader = new JsonReader();
         JsonValue val = reader.parse(fileHandle);
         
