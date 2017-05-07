@@ -30,8 +30,10 @@ import com.badlogic.gdx.utils.ObjectMap;
 public class StateManager {
     private final ObjectMap<String, State> states;
     private State loadedState;
+    private Core core;
     
-    public StateManager() {
+    public StateManager(Core core) {
+        this.core = core;
         states = new ObjectMap<String, State>();
     }
     

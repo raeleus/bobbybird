@@ -24,9 +24,14 @@
 package com.ray3k.bobby.states;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.ray3k.bobby.Core;
 import com.ray3k.bobby.State;
 
-public class CreditsState implements State {
+public class CreditsState extends State {
+    public CreditsState(Core core) {
+        super(core);
+    }
+    
     @Override
     public void start() {
     }

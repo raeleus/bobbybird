@@ -25,11 +25,21 @@ package com.ray3k.bobby;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-public interface State {
-    public void start();
-    public void draw(SpriteBatch spriteBatch, float delta);
-    public void act(float delta);
-    public void stop();
-    public void dispose();
-    public void resize(int width, int height);
+public abstract class State {
+    private Core core;
+    
+    public abstract void start();
+    public abstract void draw(SpriteBatch spriteBatch, float delta);
+    public abstract void act(float delta);
+    public abstract void stop();
+    public abstract void dispose();
+    public abstract void resize(int width, int height);
+    
+    public State(Core core) {
+        this.core = core;
+    }
+    
+    public Core getCore() {
+        return core;
+    }
 }

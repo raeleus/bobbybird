@@ -17,13 +17,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.ray3k.bobby.Core;
 import com.ray3k.bobby.State;
 
-public class LoadingState implements State {
+public class LoadingState extends State {
     private Stage stage;
     private Skin skin;
     private ProgressBar progressBar;
@@ -31,7 +30,8 @@ public class LoadingState implements State {
     private Table root;
     private boolean finishedLoading;
     
-    public LoadingState(String nextState) {
+    public LoadingState(String nextState, Core core) {
+        super(core);
         this.nextState = nextState;
     }
 
@@ -72,7 +72,7 @@ public class LoadingState implements State {
 
     @Override
     public void act(float delta) {
-        AssetManager assetManager = Core.core.getAssetManager();
+        AssetManager assetManager = getCore().getAssetManager();
         progressBar.setValue(assetManager.getProgress());
         stage.act(delta);
         if (!finishedLoading && assetManager.update()) {
@@ -81,7 +81,7 @@ public class LoadingState implements State {
                 public boolean act(float delta) {
                     finishedLoading = true;
                     packPixmaps();
-                    Core.core.getStateManager().loadState(nextState);
+                    getCore().getStateManager().loadState(nextState);
                     return true;
                 }
             };
@@ -119,13 +119,9 @@ public class LoadingState implements State {
     }
     
     private void packPixmaps() {
-        for (String name : Core.core.getAssetManager().getAssetNames()) {
-            System.out.println(name);
-        }
-        
-        for (String directory : Core.core.getImagePacks().keys()) {
-            for (String name : Core.core.getImagePacks().get(directory)) {
-                Core.core.getPixmapPacker().pack(Core.core.getAssetManager().get(directory + "/" + name, Pixmap.class));
+        for (String directory : getCore().getImagePacks().keys()) {
+            for (String name : getCore().getImagePacks().get(directory)) {
+                getCore().getPixmapPacker().pack(getCore().getAssetManager().get(directory + "/" + name, Pixmap.class));
             }
         }
     }

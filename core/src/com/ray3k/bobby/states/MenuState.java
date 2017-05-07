@@ -43,14 +43,17 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.ray3k.bobby.Core;
 import com.ray3k.bobby.State;
 
-public class MenuState implements State {
+public class MenuState extends State {
     private Stage stage;
     private Skin skin;
     private Table root;
-    
+
+    public MenuState(Core core) {
+        super(core);
+    }
     @Override
     public void start() {
-        skin = Core.core.getAssetManager().get(Core.DATA_PATH + "/skin/skin.json", Skin.class);
+        skin = getCore().getAssetManager().get(Core.DATA_PATH + "/skin/skin.json", Skin.class);
         stage = new Stage(new ScreenViewport());
         
         Gdx.input.setInputProcessor(stage);
@@ -80,7 +83,7 @@ public class MenuState implements State {
                 Action changeStateAction = new Action() {
                     @Override
                     public boolean act(float delta) {
-                        Core.core.getStateManager().loadState("game");
+                        getCore().getStateManager().loadState("game");
                         return true;
                     }
                 };

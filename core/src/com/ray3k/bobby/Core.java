@@ -44,7 +44,6 @@ public class Core extends ApplicationAdapter {
     public final static String VERSION = "1";
     public final static String DATA_PATH = "bobby_data";
     private final static long MS_PER_UPDATE = 10;
-    public static Core core;
     private AssetManager assetManager;
     private StateManager stateManager;
     private SpriteBatch spriteBatch;
@@ -55,8 +54,6 @@ public class Core extends ApplicationAdapter {
     
     @Override
     public void create() {
-        core = this;
-        
         initManagers();
         
         createLocalFiles();
@@ -77,11 +74,11 @@ public class Core extends ApplicationAdapter {
             imagePacks.put(DATA_PATH + "/" + name, new Array<String>());
         }
         
-        stateManager = new StateManager();
-        stateManager.addState("loading", new LoadingState("menu"));
-        stateManager.addState("menu", new MenuState());
-        stateManager.addState("game", new GameState());
-        stateManager.addState("credits", new CreditsState());
+        stateManager = new StateManager(this);
+        stateManager.addState("loading", new LoadingState("menu", this));
+        stateManager.addState("menu", new MenuState(this));
+        stateManager.addState("game", new GameState(this));
+        stateManager.addState("credits", new CreditsState(this));
         
         spriteBatch = new SpriteBatch();
         
