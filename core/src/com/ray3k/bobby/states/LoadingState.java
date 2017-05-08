@@ -124,7 +124,7 @@ public class LoadingState extends State {
     private void packPixmaps() {
         for (String directory : getCore().getImagePacks().keys()) {
             for (String name : getCore().getImagePacks().get(directory)) {
-                FileHandle file = Gdx.files.local(directory + "/" + name);
+                FileHandle file = Gdx.files.local(directory + "/" + name + ".png");
                 getCore().getPixmapPacker().pack(file.nameWithoutExtension(), getCore().getAssetManager().get(file.path(), Pixmap.class));
             }
         }

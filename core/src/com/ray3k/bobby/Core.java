@@ -150,7 +150,7 @@ public class Core extends ApplicationAdapter {
             FileHandle folder = Gdx.files.local(directory);
             for (FileHandle file : folder.list()) {
                 assetManager.load(file.path(), Pixmap.class);
-                imagePacks.get(directory).add(file.name());
+                imagePacks.get(directory).add(file.nameWithoutExtension());
             }
         }
         

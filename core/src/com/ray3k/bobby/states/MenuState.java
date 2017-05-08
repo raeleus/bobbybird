@@ -26,7 +26,6 @@ package com.ray3k.bobby.states;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -36,12 +35,16 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TiledDrawable;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.ray3k.bobby.Core;
+import static com.ray3k.bobby.Core.DATA_PATH;
 import com.ray3k.bobby.State;
 
 public class MenuState extends State {
@@ -64,7 +67,7 @@ public class MenuState extends State {
         bg.setFillParent(true);
         stage.addActor(bg);
         
-        createClouds();
+        createBG();
         
         createMenu();
     }
@@ -94,12 +97,69 @@ public class MenuState extends State {
         stage.getViewport().update(width, height, true);
     }
     
-    private Image createClouds() {
-        Image image = new Image(getCore().getAtlas().findRegion("cloud"));
-        stage.addActor(image);
+    private void createBG() {
         
         
-        return image;
+        Table tableBG = new Table();
+        tableBG.setFillParent(true);
+        stage.addActor(tableBG);
+        
+        Stack stack = new Stack();
+        float height = 0;
+        
+        Table table = new Table();
+        stack.add(table);
+        
+        Image image = new Image(getCloud());
+        table.add(image).growX().expandY().top();
+        height += image.getHeight() / 2.0f;
+
+        table = new Table();
+        stack.add(table);
+        
+        image = new Image(getBuilding());
+        table.add(image).growX().expandY().bottom();
+        height += image.getHeight();
+
+        table = new Table();
+        stack.add(table);
+        
+        image = new Image(getBush());
+        table.add(image).growX().expandY().bottom();
+        
+        tableBG.add(stack).growX().expandY().bottom().height(height);
+        
+        tableBG.row();
+        image = new Image(getGround());
+        tableBG.add(image).growX();
+    }
+    
+    private TiledDrawable getCloud() {
+        Array<String> names = getCore().getImagePacks().get(DATA_PATH + "/clouds");
+        
+        TiledDrawable tiledDrawable = new TiledDrawable(getCore().getAtlas().findRegion(names.random()));
+        return tiledDrawable;
+    }
+    
+    private TiledDrawable getBuilding() {
+        Array<String> names = getCore().getImagePacks().get(DATA_PATH + "/buildings");
+        
+        TiledDrawable tiledDrawable = new TiledDrawable(getCore().getAtlas().findRegion(names.random()));
+        return tiledDrawable;
+    }
+    
+    private TiledDrawable getGround() {
+        Array<String> names = getCore().getImagePacks().get(DATA_PATH + "/grounds");
+        
+        TiledDrawable tiledDrawable = new TiledDrawable(getCore().getAtlas().findRegion(names.random()));
+        return tiledDrawable;
+    }
+    
+    private TiledDrawable getBush() {
+        Array<String> names = getCore().getImagePacks().get(DATA_PATH + "/bushes");
+        
+        TiledDrawable tiledDrawable = new TiledDrawable(getCore().getAtlas().findRegion(names.random()));
+        return tiledDrawable;
     }
     
     private void createMenu() {
