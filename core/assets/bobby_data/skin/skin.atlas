@@ -100,9 +100,45 @@ hand
   index: -1
 play-icon
   rotate: false
-  xy: 116, 75
+  xy: 281, 256
   size: 16, 32
   orig: 16, 32
+  offset: 0, 0
+  index: -1
+scroll-bar-back-h
+  rotate: false
+  xy: 643, 929
+  size: 9, 10
+  split: 2, 2, 0, 0
+  pad: 3, 3, 0, 0
+  orig: 9, 10
+  offset: 0, 0
+  index: -1
+scroll-bar-back-v
+  rotate: false
+  xy: 548, 834
+  size: 10, 9
+  split: 0, 0, 2, 2
+  pad: 0, 0, 3, 3
+  orig: 10, 9
+  offset: 0, 0
+  index: -1
+scroll-bar-h
+  rotate: false
+  xy: 116, 97
+  size: 19, 10
+  split: 5, 5, 0, 0
+  pad: 0, 0, 0, 0
+  orig: 19, 10
+  offset: 0, 0
+  index: -1
+scroll-bar-v
+  rotate: false
+  xy: 381, 370
+  size: 10, 19
+  split: 0, 0, 5, 5
+  pad: 0, 0, 0, 0
+  orig: 10, 19
   offset: 0, 0
   index: -1
 spacebar
@@ -114,7 +150,7 @@ spacebar
   index: -1
 white
   rotate: false
-  xy: 281, 287
+  xy: 1083, 1379
   size: 1, 1
   orig: 1, 1
   offset: 0, 0

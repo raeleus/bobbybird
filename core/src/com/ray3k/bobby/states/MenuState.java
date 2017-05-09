@@ -29,11 +29,13 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.DelayAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -46,6 +48,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.ray3k.bobby.Core;
 import static com.ray3k.bobby.Core.DATA_PATH;
 import com.ray3k.bobby.State;
+import com.ray3k.bobby.actors.ScrollerPane;
 
 public class MenuState extends State {
     private Stage stage;
@@ -69,7 +72,7 @@ public class MenuState extends State {
         
         createBG();
         
-        createMenu();
+//        createMenu();
     }
     
     @Override
@@ -98,8 +101,6 @@ public class MenuState extends State {
     }
     
     private void createBG() {
-        
-        
         Table tableBG = new Table();
         tableBG.setFillParent(true);
         stage.addActor(tableBG);
@@ -130,8 +131,8 @@ public class MenuState extends State {
         tableBG.add(stack).growX().expandY().bottom().height(height);
         
         tableBG.row();
-        image = new Image(getGround());
-        tableBG.add(image).growX();
+        ScrollerPane scrollerPane = new ScrollerPane(getGround(), -50.0f, 0.0f);
+        tableBG.add(scrollerPane);
     }
     
     private TiledDrawable getCloud() {
