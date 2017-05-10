@@ -26,6 +26,12 @@ com.badlogic.gdx.graphics.Color: {
 		b: 0
 		a: 1
 	}
+	dialog-background: {
+		r: 0
+		g: 0
+		b: 0
+		a: 0.49803922
+	}
 	sky: {
 		r: 0
 		g: 0.44313726
@@ -37,6 +43,10 @@ com.badlogic.gdx.scenes.scene2d.ui.Skin$TintedDrawable: {
 	sky: {
 		name: white
 		color: sky
+	}
+	dialog-background: {
+		name: white
+		color: dialog-background
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle: {
@@ -61,6 +71,9 @@ com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton$ImageTextButtonStyle: {
 		font: score
 		up: button
 		down: button-pressed
+	}
+	list: {
+		font: font
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
@@ -107,6 +120,13 @@ com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
 com.badlogic.gdx.scenes.scene2d.ui.TextTooltip$TextTooltipStyle: {
 	default: {
 		label: default
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.Window$WindowStyle: {
+	default: {
+		background: box
+		titleFont: font
+		stageBackground: dialog-background
 	}
 }
 }

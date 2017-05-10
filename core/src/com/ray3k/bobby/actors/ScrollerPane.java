@@ -56,13 +56,6 @@ public class ScrollerPane extends Table {
     }
 
     @Override
-    public void layout() {
-        super.layout();
-//        innerTable.getCells().first().width(getWidth() + tiledDrawable.getMinWidth());
-//        innerTable.getCells().first().height(getHeight() + tiledDrawable.getMinHeight());
-    }
-
-    @Override
     public void act(float delta) {
         super.act(delta);
         
@@ -72,6 +65,5 @@ public class ScrollerPane extends Table {
         yPosition += ySpeed * delta;
         yPosition %= tiledDrawable.getMinHeight();
         scrollPane.setScrollY(-yPosition);
-        System.out.println(scrollPane.getScrollX());
     }
 }
