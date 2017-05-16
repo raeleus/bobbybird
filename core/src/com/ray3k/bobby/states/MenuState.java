@@ -24,6 +24,7 @@
 package com.ray3k.bobby.states;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Action;
@@ -199,6 +200,7 @@ public class MenuState extends State {
         imageButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeListener.ChangeEvent event, Actor actor) {
+                getCore().getAssetManager().get(Core.DATA_PATH + "/sfx/jump.wav", Sound.class).play();
                 showCharacterDialog();
             }
         });
@@ -216,7 +218,7 @@ public class MenuState extends State {
         scrollPane.setFadeScrollBars(false);
         dialog.getContentTable().add(scrollPane).grow();
         
-        ButtonGroup buttons = new ButtonGroup();
+        final ButtonGroup<ImageTextButton> buttons = new ButtonGroup<ImageTextButton>();
         for (String name : getCore().getImagePacks().get(DATA_PATH + "/characters")) {
             Drawable drawable = new TextureRegionDrawable(getCore().getAtlas().findRegion(name));
             Image image = new Image(drawable);
@@ -236,6 +238,9 @@ public class MenuState extends State {
         textButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeListener.ChangeEvent event, Actor actor) {
+                getCore().getAssetManager().get(Core.DATA_PATH + "/sfx/coin.wav", Sound.class).play();
+                ((GameState)getCore().getStateManager().getState("game")).setSelectedCharacter(buttons.getChecked().getText().toString());
+                
                 Gdx.input.setInputProcessor(null);
                 Action changeStateAction = new Action() {
                     @Override

@@ -85,6 +85,10 @@ public class StateManager {
     public void removeState(String name) {
         states.remove(name);
     }
+    
+    public State getState(String name) {
+        return states.get(name);
+    }
 
     void resize(int width, int height) {
         if (loadedState != null) {

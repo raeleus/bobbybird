@@ -64,7 +64,7 @@ public class LoadingState extends State {
         stage.addActor(root);
         
         progressBar = new ProgressBar(0, 1, .01f, false, skin);
-        progressBar.setAnimateDuration(.25f);
+        progressBar.setAnimateDuration(.1f);
         root.add(progressBar).growX().expandY().pad(20.0f);
     }
 

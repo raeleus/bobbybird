@@ -119,7 +119,15 @@ public class Core extends ApplicationAdapter {
         }
         
         if (!Gdx.files.local(DATA_PATH + "/skin/skin.json").exists()) {
-            Gdx.files.internal("skin").copyTo(Gdx.files.local(DATA_PATH + "/skin"));
+            Gdx.files.internal("skin/font-export.fnt").copyTo(Gdx.files.local(DATA_PATH + "/skin/font-export.fnt"));
+            Gdx.files.internal("skin/font-game-over-export.fnt").copyTo(Gdx.files.local(DATA_PATH + "/skin/font-game-over-export.fnt"));
+            Gdx.files.internal("skin/font-get-ready-export.fnt").copyTo(Gdx.files.local(DATA_PATH + "/skin/font-get-ready-export.fnt"));
+            Gdx.files.internal("skin/font-score-export.fnt").copyTo(Gdx.files.local(DATA_PATH + "/skin/font-score-export.fnt"));
+            Gdx.files.internal("skin/font-summary-export.fnt").copyTo(Gdx.files.local(DATA_PATH + "/skin/font-summary-export.fnt"));
+            Gdx.files.internal("skin/font-title-export.fnt").copyTo(Gdx.files.local(DATA_PATH + "/skin/font-title-export.fnt"));
+            Gdx.files.internal("skin/skin.atlas").copyTo(Gdx.files.local(DATA_PATH + "/skin/skin.atlas"));
+            Gdx.files.internal("skin/skin.json").copyTo(Gdx.files.local(DATA_PATH + "/skin/skin.json"));
+            Gdx.files.internal("skin/skin.png").copyTo(Gdx.files.local(DATA_PATH + "/skin/skin.png"));
         }
         
         if (!Gdx.files.local(DATA_PATH + "/data.json").exists()) {
