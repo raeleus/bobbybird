@@ -100,7 +100,7 @@ public class Core extends ApplicationAdapter {
             lag -= MS_PER_UPDATE;
         }
         
-        stateManager.draw(spriteBatch, lag);
+        stateManager.draw(spriteBatch, lag / MS_PER_UPDATE);
     }
 
     @Override

@@ -29,6 +29,7 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -39,17 +40,22 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.TiledDrawable;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.ray3k.bobby.Core;
+import static com.ray3k.bobby.Core.DATA_PATH;
 import com.ray3k.bobby.EntityManager;
 import com.ray3k.bobby.InputManager;
 import com.ray3k.bobby.State;
 import com.ray3k.bobby.entities.BirdEntity;
+import com.ray3k.bobby.entities.GroundEntity;
 
 public class GameState extends State {
     private String selectedCharacter;
+    private TextureRegion groundTexture;
     private Stage stage;
     private Skin skin;
     private Table table;
@@ -93,6 +99,41 @@ public class GameState extends State {
         showTutorial();
         
         BirdEntity bird = new BirdEntity(this);
+        
+        groundTexture = getGround();
+        for (int x = 0; x < Gdx.graphics.getWidth() + groundTexture.getRegionWidth(); x += groundTexture.getRegionWidth()) {
+            GroundEntity ground = new GroundEntity(this);
+            ground.setTextureRegion(groundTexture);
+            ground.setPosition(x, 0.0f);
+        }
+        
+        TextureRegion region = getBush();
+    }
+    
+    public void createGroundEntity() {
+        GroundEntity ground = new GroundEntity(this);
+        ground.setTextureRegion(groundTexture);
+        ground.setPosition(Gdx.graphics.getWidth() + groundTexture.getRegionWidth() - Gdx.graphics.getWidth() % groundTexture.getRegionWidth(), 0.0f);
+    }
+    
+    private TextureRegion getCloud() {
+        Array<String> names = getCore().getImagePacks().get(DATA_PATH + "/clouds");
+        return getCore().getAtlas().findRegion(names.random());
+    }
+    
+    private TextureRegion getBuilding() {
+        Array<String> names = getCore().getImagePacks().get(DATA_PATH + "/buildings");
+        return getCore().getAtlas().findRegion(names.random());
+    }
+    
+    private TextureRegion getGround() {
+        Array<String> names = getCore().getImagePacks().get(DATA_PATH + "/grounds");
+        return getCore().getAtlas().findRegion(names.random());
+    }
+    
+    private TextureRegion getBush() {
+        Array<String> names = getCore().getImagePacks().get(DATA_PATH + "/bushes");
+        return getCore().getAtlas().findRegion(names.random());
     }
     
     @Override
@@ -147,10 +188,10 @@ public class GameState extends State {
         table.add(subTable);
         
         Label label = new Label("Get Ready!", skin, "get-ready");
-        subTable.add(label).colspan(3);
+        subTable.add(label).colspan(3).padBottom(50.0f);
         
         subTable.row();
-        subTable.defaults().padTop(25.0f);
+        subTable.defaults().padTop(50.0f);
         label = new Label(" PRESS ", skin, "flag");
         subTable.add(label);
         

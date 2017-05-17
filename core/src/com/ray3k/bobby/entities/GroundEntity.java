@@ -24,60 +24,37 @@
 
 package com.ray3k.bobby.entities;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.MathUtils;
-import com.ray3k.bobby.Core;
 import com.ray3k.bobby.Entity;
-import com.ray3k.bobby.InputManager;
 import com.ray3k.bobby.states.GameState;
 
-public class BirdEntity extends Entity implements InputManager.FlapListener {
-    private Sound jump;
-    private Sound hit;
-    private Sound coin;
-    
-    public BirdEntity(GameState gameState) {
+public class GroundEntity extends Entity {
+    private GameState gameState;
+
+    public GroundEntity(GameState gameState) {
         super(gameState.getManager(), gameState.getCore());
-        gameState.getInputManager().addFlapListener(this);
+        this.gameState = gameState;
     }
 
     @Override
     public void create() {
-        setTextureRegion(getCore().getAtlas().findRegion(((GameState) getCore().getStateManager().getState("game")).getSelectedCharacter()));
-        setX(50);
-        setY(Gdx.graphics.getHeight() / 2.0f - getTextureRegion().getRegionHeight() / 2.0f);
-        setOffsetX(getTextureRegion().getRegionWidth() / 2.0f);
-        setOffsetY(getTextureRegion().getRegionHeight() / 2.0f);
-        
-        jump = getCore().getAssetManager().get(Core.DATA_PATH + "/sfx/jump.wav", Sound.class);
-        hit = getCore().getAssetManager().get(Core.DATA_PATH + "/sfx/hit.wav", Sound.class);
-        coin = getCore().getAssetManager().get(Core.DATA_PATH + "/sfx/coin.wav", Sound.class);
+        setMotion(500.0f, 180.0f);
     }
 
     @Override
     public void act(float delta) {
-        float percent = (getYspeed() + 1000) / 800;
-        percent = MathUtils.clamp(percent, 0.0f, 1.0f);
-        setRotation(120.0f * percent - 90.0f);
+        if (getX() < -getTextureRegion().getRegionWidth()) {
+            dispose();
+            gameState.createGroundEntity();
+        }
     }
 
     @Override
     public void draw(SpriteBatch spriteBatch, float delta) {
-        
     }
 
     @Override
     public void destroy() {
-        hit.play();
-    }
-
-    @Override
-    public void fire() {
-        setMotion(525.0f, 90.0f);
-        setGravity(1500.0f, 270.0f);
-        jump.play();
     }
 
 }

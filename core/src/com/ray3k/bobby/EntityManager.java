@@ -48,9 +48,12 @@ public class EntityManager {
         while (iter.hasNext()) {
             Entity entity = iter.next();
             if (!entity.isDestroyed()) {
+                entity.addXspeed(entity.getGravityX() * delta);
+                entity.addYspeed(entity.getGravityY() * delta);
+                
                 entity.addX(entity.getXspeed() * delta);
                 entity.addY(entity.getYspeed() * delta);
-                //todo: add gravity
+                
                 entity.act(delta);
             } else {
                 iter.remove();
@@ -62,7 +65,7 @@ public class EntityManager {
         for (Entity entity : entities) {
             if (!entity.isDestroyed()) {
                 if (entity.getTextureRegion() != null) {
-                    spriteBatch.draw(entity.getTextureRegion(), entity.getX(), entity.getY(), entity.getOffsetX(), entity.getOffsetY(), entity.getTextureRegion().getRegionWidth(), entity.getTextureRegion().getRegionHeight(), entity.getScaleX(), entity.getScaleY(), entity.getRotation());
+                    spriteBatch.draw(entity.getTextureRegion(), entity.getX() + entity.getXspeed() * delta, entity.getY() + entity.getYspeed() * delta, entity.getOffsetX(), entity.getOffsetY(), entity.getTextureRegion().getRegionWidth(), entity.getTextureRegion().getRegionHeight(), entity.getScaleX(), entity.getScaleY(), entity.getRotation());
                 }
                 
                 entity.draw(spriteBatch, delta);

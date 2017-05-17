@@ -28,6 +28,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
 public abstract class Entity {
+    private static final Vector2 temp = new Vector2();
     private final Vector2 position;
     private final Vector2 speed;
     private final Vector2 offset;
@@ -37,12 +38,15 @@ public abstract class Entity {
     private boolean destroyed;
     private final EntityManager manager;
     private final Core core;
+    private final Vector2 gravity;
 
     public Entity(EntityManager manager, Core core) {
         position = new Vector2();
         speed = new Vector2();
         offset = new Vector2();
         scale = new Vector2();
+        gravity = new Vector2();
+        
         scale.x = 1.0f;
         scale.y = 1.0f;
         rotation = 0.0f;
@@ -82,6 +86,11 @@ public abstract class Entity {
         this.position.set(position);
     }
     
+    public void setPosition(float x, float y) {
+        setX(x);
+        setY(y);
+    }
+    
     public void setX(float x) {
         this.position.x = x;
     }
@@ -98,8 +107,8 @@ public abstract class Entity {
         this.position.y += y;
     }
 
-    public Vector2 getSpeed() {
-        return speed.cpy();
+    public float getSpeed() {
+        return speed.len();
     }
     
     public float getXspeed() {
@@ -128,6 +137,15 @@ public abstract class Entity {
     
     public void addYspeed(float y) {
         this.speed.y += y;
+    }
+    
+    public void setMotion(float speed, float direction) {
+        this.speed.set(speed, 0);
+        this.speed.rotate(direction);
+    }
+    
+    public float getDirection() {
+        return this.speed.angle();
     }
 
     public float getRotation() {
@@ -200,5 +218,30 @@ public abstract class Entity {
 
     public Core getCore() {
         return core;
+    }
+    
+    public void setGravityX(float gravityX) {
+        gravity.x = gravityX;
+    }
+    
+    public void setGravityY(float gravityY) {
+        gravity.y = gravityY;
+    }
+    
+    public void setGravity(float speed, float direction) {
+        gravity.set(speed, 0);
+        gravity.rotate(direction);
+    }
+    
+    public float getGravityX() {
+        return gravity.x;
+    }
+    
+    public float getGravityY() {
+        return gravity.y;
+    }
+    
+    public Vector2 getGravity() {
+        return gravity.cpy();
     }
 }
