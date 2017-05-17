@@ -41,6 +41,12 @@ import com.ray3k.bobby.states.CreditsState;
 import com.ray3k.bobby.states.GameState;
 import com.ray3k.bobby.states.LoadingState;
 import com.ray3k.bobby.states.MenuState;
+import java.awt.Desktop;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import javax.swing.JOptionPane;
 
 public class Core extends ApplicationAdapter {
     public final static String VERSION = "1";
@@ -57,16 +63,43 @@ public class Core extends ApplicationAdapter {
     
     @Override
     public void create() {
-        initManagers();
-        
-        createLocalFiles();
-        
-        loadAssets();
-        
-        previous = TimeUtils.millis();
-        lag = 0;
-        
-        stateManager.loadState("loading");
+        try {
+            initManagers();
+
+            createLocalFiles();
+
+            loadAssets();
+
+            previous = TimeUtils.millis();
+            lag = 0;
+
+            stateManager.loadState("loading");
+        } catch (Exception e) {
+            e.printStackTrace();
+            
+            FileWriter fw = null;
+            try {
+                fw = new FileWriter(Gdx.files.local("java-stacktrace.txt").file(), true);
+                PrintWriter pw = new PrintWriter(fw);
+                e.printStackTrace(pw);
+                pw.close();
+                fw.close();
+                int choice = JOptionPane.showConfirmDialog(null, "Exception occurred. See error log?", "Skin Composer Exception!", JOptionPane.YES_NO_OPTION);
+                if (choice == 0) {
+                    FileHandle startDirectory = Gdx.files.local("java-stacktrace.txt");
+                    if (startDirectory.exists()) {
+                        File file = startDirectory.file();
+                        Desktop desktop = Desktop.getDesktop();
+                        desktop.open(file);
+                    } else {
+                        throw new IOException("Directory doesn't exist: " + startDirectory.path());
+                    }
+                }
+                Gdx.app.exit();
+            } catch (Exception ex) {
+                
+            }
+        }
     }
     
     public void initManagers() {
@@ -90,17 +123,44 @@ public class Core extends ApplicationAdapter {
     
     @Override
     public void render() {
-        long current = TimeUtils.millis();
-        long elapsed = current - previous;
-        previous = current;
-        lag += elapsed;
-        
-        while (lag >= MS_PER_UPDATE) {
-            stateManager.act(MS_PER_UPDATE / 1000.0f);
-            lag -= MS_PER_UPDATE;
+        try {
+            long current = TimeUtils.millis();
+            long elapsed = current - previous;
+            previous = current;
+            lag += elapsed;
+
+            while (lag >= MS_PER_UPDATE) {
+                stateManager.act(MS_PER_UPDATE / 1000.0f);
+                lag -= MS_PER_UPDATE;
+            }
+
+            stateManager.draw(spriteBatch, lag / MS_PER_UPDATE);
+        } catch (Exception e) {
+            e.printStackTrace();
+            
+            FileWriter fw = null;
+            try {
+                fw = new FileWriter(Gdx.files.local("java-stacktrace.txt").file(), true);
+                PrintWriter pw = new PrintWriter(fw);
+                e.printStackTrace(pw);
+                pw.close();
+                fw.close();
+                int choice = JOptionPane.showConfirmDialog(null, "Exception occurred. See error log?", "Skin Composer Exception!", JOptionPane.YES_NO_OPTION);
+                if (choice == 0) {
+                    FileHandle startDirectory = Gdx.files.local("java-stacktrace.txt");
+                    if (startDirectory.exists()) {
+                        File file = startDirectory.file();
+                        Desktop desktop = Desktop.getDesktop();
+                        desktop.open(file);
+                    } else {
+                        throw new IOException("Directory doesn't exist: " + startDirectory.path());
+                    }
+                }
+                Gdx.app.exit();
+            } catch (Exception ex) {
+                
+            }
         }
-        
-        stateManager.draw(spriteBatch, lag / MS_PER_UPDATE);
     }
 
     @Override
