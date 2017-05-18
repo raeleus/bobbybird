@@ -26,6 +26,7 @@ package com.ray3k.bobby;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
+import java.util.Comparator;
 import java.util.Iterator;
 
 public class EntityManager {
@@ -54,7 +55,13 @@ public class EntityManager {
                 entity.addX(entity.getXspeed() * delta);
                 entity.addY(entity.getYspeed() * delta);
                 
+                entity.getCollisionBox().setPosition(entity.getX(), entity.getY());
+                
                 entity.act(delta);
+                
+                if (!entity.isDestroyed()) {
+                    //do collision detection.
+                }
             } else {
                 iter.remove();
             }
@@ -62,6 +69,13 @@ public class EntityManager {
     }
     
     public void draw(SpriteBatch spriteBatch, float delta) {
+        entities.sort(new Comparator<Entity>() {
+            @Override
+            public int compare(Entity o1, Entity o2) {
+                return o2.getDepth() - o1.getDepth();
+            }
+        });
+        
         for (Entity entity : entities) {
             if (!entity.isDestroyed()) {
                 if (entity.getTextureRegion() != null) {

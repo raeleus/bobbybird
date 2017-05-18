@@ -34,6 +34,7 @@ public class GroundEntity extends Entity {
     public GroundEntity(GameState gameState) {
         super(gameState.getManager(), gameState.getCore());
         this.gameState = gameState;
+        setDepth(10);
     }
 
     @Override

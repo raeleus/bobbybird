@@ -28,6 +28,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Rectangle;
 import com.ray3k.bobby.Core;
 import com.ray3k.bobby.Entity;
 import com.ray3k.bobby.InputManager;
@@ -37,10 +38,12 @@ public class BirdEntity extends Entity implements InputManager.FlapListener {
     private Sound jump;
     private Sound hit;
     private Sound coin;
+    private boolean flying;
     
     public BirdEntity(GameState gameState) {
         super(gameState.getManager(), gameState.getCore());
         gameState.getInputManager().addFlapListener(this);
+        flying = false;
     }
 
     @Override
@@ -58,9 +61,13 @@ public class BirdEntity extends Entity implements InputManager.FlapListener {
 
     @Override
     public void act(float delta) {
-        float percent = (getYspeed() + 1000) / 800;
-        percent = MathUtils.clamp(percent, 0.0f, 1.0f);
-        setRotation(120.0f * percent - 90.0f);
+        if (flying) {
+            float percent = (getYspeed() + 1000) / 800;
+            percent = MathUtils.clamp(percent, 0.0f, 1.0f);
+            setRotation(120.0f * percent - 90.0f);
+        } else {
+            setRotation(0.0f);
+        }
     }
 
     @Override
@@ -78,6 +85,6 @@ public class BirdEntity extends Entity implements InputManager.FlapListener {
         setMotion(525.0f, 90.0f);
         setGravity(1500.0f, 270.0f);
         jump.play();
+        flying = true;
     }
-
 }

@@ -25,6 +25,7 @@ package com.ray3k.bobby;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 public abstract class Entity {
@@ -39,6 +40,9 @@ public abstract class Entity {
     private final EntityManager manager;
     private final Core core;
     private final Vector2 gravity;
+    private int depth;
+    private Rectangle collisionBox;
+    private boolean checkingCollisions;
 
     public Entity(EntityManager manager, Core core) {
         position = new Vector2();
@@ -50,10 +54,13 @@ public abstract class Entity {
         scale.x = 1.0f;
         scale.y = 1.0f;
         rotation = 0.0f;
+        depth = 0;
         destroyed = false;
         this.manager = manager;
         manager.addEntity(this);
         this.core = core;
+        collisionBox = new Rectangle();
+        checkingCollisions = false;
         
         create();
     }
@@ -243,5 +250,25 @@ public abstract class Entity {
     
     public Vector2 getGravity() {
         return gravity.cpy();
+    }
+
+    public int getDepth() {
+        return depth;
+    }
+
+    public void setDepth(int depth) {
+        this.depth = depth;
+    }
+
+    public Rectangle getCollisionBox() {
+        return collisionBox;
+    }
+
+    public boolean isCheckingCollisions() {
+        return checkingCollisions;
+    }
+
+    public void setCheckingCollisions(boolean checkingCollisions) {
+        this.checkingCollisions = checkingCollisions;
     }
 }
