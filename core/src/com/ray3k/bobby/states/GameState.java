@@ -40,7 +40,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.utils.TiledDrawable;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
@@ -52,10 +51,17 @@ import com.ray3k.bobby.InputManager;
 import com.ray3k.bobby.State;
 import com.ray3k.bobby.entities.BirdEntity;
 import com.ray3k.bobby.entities.GroundEntity;
+import com.ray3k.bobby.entities.ObstacleEntity;
 
 public class GameState extends State {
+    public static final float OBSTACLE_GAP = 400.0f;
     private String selectedCharacter;
     private TextureRegion groundTexture;
+    private TextureRegion obstacleTexture;
+    private TextureRegion bushTexture;
+    private TextureRegion buildingTexture;
+    private TextureRegion cloudTexture;
+    
     private Stage stage;
     private Skin skin;
     private Table table;
@@ -101,19 +107,47 @@ public class GameState extends State {
         BirdEntity bird = new BirdEntity(this);
         
         groundTexture = getGround();
+        cloudTexture = getCloud();
+        bushTexture = getBush();
+        buildingTexture = getBuilding();
+        obstacleTexture = getObstacle();
+        
         for (int x = 0; x < Gdx.graphics.getWidth() + groundTexture.getRegionWidth(); x += groundTexture.getRegionWidth()) {
             GroundEntity ground = new GroundEntity(this);
             ground.setTextureRegion(groundTexture);
             ground.setPosition(x, 0.0f);
         }
         
-        TextureRegion region = getBush();
+        for (int i = 0; i < Gdx.graphics.getWidth(); i += obstacleTexture.getRegionWidth() + OBSTACLE_GAP) {
+            Array<ObstacleEntity> obstacles = createObstaclePair();
+            obstacles.get(0).setX(Gdx.graphics.getWidth() + i);
+            obstacles.get(1).setX(Gdx.graphics.getWidth() + i);
+        }
     }
     
     public void createGroundEntity() {
         GroundEntity ground = new GroundEntity(this);
         ground.setTextureRegion(groundTexture);
+        ground.getCollisionBox().setSize(ground.getTextureRegion().getRegionWidth(), ground.getTextureRegion().getRegionHeight());
+        ground.setCheckingCollisions(true); 
         ground.setPosition(Gdx.graphics.getWidth() + groundTexture.getRegionWidth() - Gdx.graphics.getWidth() % groundTexture.getRegionWidth(), 0.0f);
+    }
+    
+    public Array<ObstacleEntity> createObstaclePair() {
+        Array<ObstacleEntity> obstacles = new Array<ObstacleEntity>();
+        ObstacleEntity obstacle = new ObstacleEntity(this);
+        obstacle.setPosition(Gdx.graphics.getWidth(), 0.0f);
+        obstacle.setTextureRegion(obstacleTexture);
+        obstacle.getCollisionBox().setSize(obstacle.getTextureRegion().getRegionWidth(), obstacle.getTextureRegion().getRegionHeight());
+        obstacles.add(obstacle);
+        
+        obstacle = new ObstacleEntity(this);
+        obstacle.setPosition(Gdx.graphics.getWidth(), Gdx.graphics.getHeight() - obstacleTexture.getRegionHeight());
+        obstacle.setTextureRegion(obstacleTexture);
+        obstacle.getCollisionBox().setSize(obstacle.getTextureRegion().getRegionWidth(), obstacle.getTextureRegion().getRegionHeight());
+        obstacle.setCreateOnDeath(false);
+        obstacles.add(obstacle);
+        return obstacles;
     }
     
     private TextureRegion getCloud() {
@@ -128,6 +162,11 @@ public class GameState extends State {
     
     private TextureRegion getGround() {
         Array<String> names = getCore().getImagePacks().get(DATA_PATH + "/grounds");
+        return getCore().getAtlas().findRegion(names.random());
+    }
+    
+    private TextureRegion getObstacle() {
+        Array<String> names = getCore().getImagePacks().get(DATA_PATH + "/obstacles");
         return getCore().getAtlas().findRegion(names.random());
     }
     

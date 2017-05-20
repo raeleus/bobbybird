@@ -28,25 +28,28 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.ray3k.bobby.Entity;
 import com.ray3k.bobby.states.GameState;
 
-public class GroundEntity extends Entity {
+public class ObstacleEntity extends Entity {
     private final GameState gameState;
-
-    public GroundEntity(GameState gameState) {
+    private boolean createOnDeath;
+    
+    public ObstacleEntity (GameState gameState) {
         super(gameState.getManager(), gameState.getCore());
         this.gameState = gameState;
     }
-
+    
     @Override
     public void create() {
-        setDepth(10);
+        createOnDeath = true;
+        setDepth(100);
         setMotion(500.0f, 180.0f);
+        setCheckingCollisions(true);
     }
 
     @Override
     public void act(float delta) {
-        if (getX() < -getTextureRegion().getRegionWidth()) {
+        if (createOnDeath && getX() < -getTextureRegion().getRegionWidth() - GameState.OBSTACLE_GAP) {
             dispose();
-            gameState.createGroundEntity();
+            gameState.createObstaclePair();
         }
     }
 
@@ -60,6 +63,14 @@ public class GroundEntity extends Entity {
 
     @Override
     public void collision(Entity other) {
+    }
+
+    public boolean isCreateOnDeath() {
+        return createOnDeath;
+    }
+
+    public void setCreateOnDeath(boolean createOnDeath) {
+        this.createOnDeath = createOnDeath;
     }
 
 }

@@ -73,8 +73,13 @@ public abstract class Entity {
     
     public abstract void destroy();
     
+    public abstract void collision(Entity other);
+    
     public void dispose() {
-        destroyed = true;
+        if (!destroyed) {
+            destroyed = true;
+            destroy();
+        }
     }
 
     public Vector2 getPosition() {

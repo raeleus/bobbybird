@@ -28,7 +28,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Rectangle;
 import com.ray3k.bobby.Core;
 import com.ray3k.bobby.Entity;
 import com.ray3k.bobby.InputManager;
@@ -39,11 +38,14 @@ public class BirdEntity extends Entity implements InputManager.FlapListener {
     private Sound hit;
     private Sound coin;
     private boolean flying;
+    private GameState gameState;
     
     public BirdEntity(GameState gameState) {
         super(gameState.getManager(), gameState.getCore());
+        this.gameState = gameState;
         gameState.getInputManager().addFlapListener(this);
         flying = false;
+        setCheckingCollisions(true);
     }
 
     @Override
@@ -53,6 +55,7 @@ public class BirdEntity extends Entity implements InputManager.FlapListener {
         setY(Gdx.graphics.getHeight() / 2.0f - getTextureRegion().getRegionHeight() / 2.0f);
         setOffsetX(getTextureRegion().getRegionWidth() / 2.0f);
         setOffsetY(getTextureRegion().getRegionHeight() / 2.0f);
+        getCollisionBox().setSize(getTextureRegion().getRegionWidth(), getTextureRegion().getRegionHeight());
         
         jump = getCore().getAssetManager().get(Core.DATA_PATH + "/sfx/jump.wav", Sound.class);
         hit = getCore().getAssetManager().get(Core.DATA_PATH + "/sfx/hit.wav", Sound.class);
@@ -78,6 +81,14 @@ public class BirdEntity extends Entity implements InputManager.FlapListener {
     @Override
     public void destroy() {
         hit.play();
+        gameState.getInputManager().removeFlapListener(this);
+    }
+
+    @Override
+    public void collision(Entity other) {
+        if (other instanceof GroundEntity || other instanceof ObstacleEntity) {
+            dispose();
+        }
     }
 
     @Override

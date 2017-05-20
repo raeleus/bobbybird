@@ -59,8 +59,17 @@ public class EntityManager {
                 
                 entity.act(delta);
                 
-                if (!entity.isDestroyed()) {
-                    //do collision detection.
+                for (int i = 0; i < entities.size ; i++) {
+                    if (!entity.isDestroyed() && entity.isCheckingCollisions()) {
+                        Entity other = entities.get(i);
+                        if (other.isCheckingCollisions()) {
+                            if (entity.getCollisionBox().overlaps(other.getCollisionBox())) {
+                                entity.collision(other);
+                            }
+                        }
+                    } else {
+                        break;
+                    }
                 }
             } else {
                 iter.remove();
