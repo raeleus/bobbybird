@@ -80,12 +80,15 @@ public class GameState extends State implements FlapListener {
     private InputManager inputManager;
     private boolean spawnedObstacleManager;
     
+    private boolean queueQuitGame;
+    
     public GameState(Core core) {
         super(core);
     }
     
     @Override
     public void start() {
+        queueQuitGame = false;
         score = 0;
         
         manager = new EntityManager();
@@ -199,16 +202,19 @@ public class GameState extends State implements FlapListener {
         manager.act(delta);
         
         stage.act(delta);
+        
+        if (queueQuitGame) {
+            getCore().getStateManager().loadState("menu");
+        }
     }
 
     @Override
     public void dispose() {
-        stage.dispose();
     }
 
     @Override
     public void stop() {
-        
+        stage.dispose();
     }
     
     @Override
@@ -314,7 +320,7 @@ public class GameState extends State implements FlapListener {
             public boolean keyDown(InputEvent event, int keycode) {
                 if (keycode == Keys.SPACE) {
                     stage.removeListener(this);
-                    getCore().getStateManager().loadState("menu");
+                    queueQuitGame = true;
                 }
                 return true;
             }

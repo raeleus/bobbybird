@@ -44,7 +44,7 @@ public class CorpseEntity extends Entity {
     @Override
     public void act(float delta) {
         if (getY() + getTextureRegion().getRegionHeight() < 0) {
-            destroy();
+            dispose();
             gameState.showGameOver();
         }
     }
