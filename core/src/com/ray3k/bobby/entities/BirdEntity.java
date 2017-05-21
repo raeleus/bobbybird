@@ -55,7 +55,7 @@ public class BirdEntity extends Entity implements InputManager.FlapListener {
         setY(Gdx.graphics.getHeight() / 2.0f - getTextureRegion().getRegionHeight() / 2.0f);
         setOffsetX(getTextureRegion().getRegionWidth() / 2.0f);
         setOffsetY(getTextureRegion().getRegionHeight() / 2.0f);
-        getCollisionBox().setSize(getTextureRegion().getRegionWidth(), getTextureRegion().getRegionHeight());
+        getCollisionBox().setSize(getTextureRegion().getRegionWidth() / 2.0f, getTextureRegion().getRegionHeight() / 2.0f);
         
         jump = getCore().getAssetManager().get(Core.DATA_PATH + "/sfx/jump.wav", Sound.class);
         hit = getCore().getAssetManager().get(Core.DATA_PATH + "/sfx/hit.wav", Sound.class);
@@ -92,7 +92,7 @@ public class BirdEntity extends Entity implements InputManager.FlapListener {
     }
 
     @Override
-    public void fire() {
+    public void flapPressed() {
         setMotion(525.0f, 90.0f);
         setGravity(1500.0f, 270.0f);
         jump.play();

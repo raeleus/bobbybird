@@ -35,7 +35,7 @@ public class InputManager implements InputProcessor {
     }
     
     public interface FlapListener {
-        public void fire();
+        public void flapPressed();
     }
     
     public void addFlapListener(FlapListener flapListener) {
@@ -54,7 +54,7 @@ public class InputManager implements InputProcessor {
     public boolean keyDown(int keycode) {
         if (keycode == Keys.SPACE) {
             for (FlapListener flapListener : flapListeners) {
-                flapListener.fire();
+                flapListener.flapPressed();
             }
         }
         return false;

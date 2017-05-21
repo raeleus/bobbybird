@@ -48,16 +48,20 @@ import com.ray3k.bobby.Core;
 import static com.ray3k.bobby.Core.DATA_PATH;
 import com.ray3k.bobby.EntityManager;
 import com.ray3k.bobby.InputManager;
+import com.ray3k.bobby.InputManager.FlapListener;
+import com.ray3k.bobby.ObstacleManager;
 import com.ray3k.bobby.State;
 import com.ray3k.bobby.entities.BirdEntity;
 import com.ray3k.bobby.entities.GroundEntity;
-import com.ray3k.bobby.entities.ObstacleEntity;
 
-public class GameState extends State {
+public class GameState extends State implements FlapListener {
     public static final float OBSTACLE_GAP = 400.0f;
+    public static final float SCROLL_SPEED = 300.0f;
+    public static final float OBSTACLE_MIN_HEIGHT = 50.0f;
+    public static final float OBSTACLE_MAX_HEIGHT = 350.0f;
+    public static final float GAP_HEIGHT = 175.0f;
     private String selectedCharacter;
     private TextureRegion groundTexture;
-    private TextureRegion obstacleTexture;
     private TextureRegion bushTexture;
     private TextureRegion buildingTexture;
     private TextureRegion cloudTexture;
@@ -70,6 +74,7 @@ public class GameState extends State {
     private OrthographicCamera camera;
     private Viewport viewport;
     private InputManager inputManager;
+    private boolean spawnedObstacleManager;
     
     public GameState(Core core) {
         super(core);
@@ -82,6 +87,8 @@ public class GameState extends State {
         manager = new EntityManager();
         
         inputManager = new InputManager();
+        inputManager.addFlapListener(this);
+        spawnedObstacleManager = false;
         
         camera = new OrthographicCamera();
         viewport = new ScreenViewport(camera);
@@ -110,18 +117,11 @@ public class GameState extends State {
         cloudTexture = getCloud();
         bushTexture = getBush();
         buildingTexture = getBuilding();
-        obstacleTexture = getObstacle();
         
         for (int x = 0; x < Gdx.graphics.getWidth() + groundTexture.getRegionWidth(); x += groundTexture.getRegionWidth()) {
             GroundEntity ground = new GroundEntity(this);
             ground.setTextureRegion(groundTexture);
             ground.setPosition(x, 0.0f);
-        }
-        
-        for (int i = 0; i < Gdx.graphics.getWidth(); i += obstacleTexture.getRegionWidth() + OBSTACLE_GAP) {
-            Array<ObstacleEntity> obstacles = createObstaclePair();
-            obstacles.get(0).setX(Gdx.graphics.getWidth() + i);
-            obstacles.get(1).setX(Gdx.graphics.getWidth() + i);
         }
     }
     
@@ -131,23 +131,6 @@ public class GameState extends State {
         ground.getCollisionBox().setSize(ground.getTextureRegion().getRegionWidth(), ground.getTextureRegion().getRegionHeight());
         ground.setCheckingCollisions(true); 
         ground.setPosition(Gdx.graphics.getWidth() + groundTexture.getRegionWidth() - Gdx.graphics.getWidth() % groundTexture.getRegionWidth(), 0.0f);
-    }
-    
-    public Array<ObstacleEntity> createObstaclePair() {
-        Array<ObstacleEntity> obstacles = new Array<ObstacleEntity>();
-        ObstacleEntity obstacle = new ObstacleEntity(this);
-        obstacle.setPosition(Gdx.graphics.getWidth(), 0.0f);
-        obstacle.setTextureRegion(obstacleTexture);
-        obstacle.getCollisionBox().setSize(obstacle.getTextureRegion().getRegionWidth(), obstacle.getTextureRegion().getRegionHeight());
-        obstacles.add(obstacle);
-        
-        obstacle = new ObstacleEntity(this);
-        obstacle.setPosition(Gdx.graphics.getWidth(), Gdx.graphics.getHeight() - obstacleTexture.getRegionHeight());
-        obstacle.setTextureRegion(obstacleTexture);
-        obstacle.getCollisionBox().setSize(obstacle.getTextureRegion().getRegionWidth(), obstacle.getTextureRegion().getRegionHeight());
-        obstacle.setCreateOnDeath(false);
-        obstacles.add(obstacle);
-        return obstacles;
     }
     
     private TextureRegion getCloud() {
@@ -162,11 +145,6 @@ public class GameState extends State {
     
     private TextureRegion getGround() {
         Array<String> names = getCore().getImagePacks().get(DATA_PATH + "/grounds");
-        return getCore().getAtlas().findRegion(names.random());
-    }
-    
-    private TextureRegion getObstacle() {
-        Array<String> names = getCore().getImagePacks().get(DATA_PATH + "/obstacles");
         return getCore().getAtlas().findRegion(names.random());
     }
     
@@ -288,5 +266,17 @@ public class GameState extends State {
 
     public InputManager getInputManager() {
         return inputManager;
+    }
+
+    @Override
+    public void flapPressed() {
+        if (!spawnedObstacleManager) {
+            ObstacleManager manager = new ObstacleManager(this);
+            spawnedObstacleManager = true;
+        }
+    }
+
+    public TextureRegion getGroundTexture() {
+        return groundTexture;
     }
 }

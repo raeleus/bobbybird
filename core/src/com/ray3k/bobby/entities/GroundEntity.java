@@ -39,7 +39,7 @@ public class GroundEntity extends Entity {
     @Override
     public void create() {
         setDepth(10);
-        setMotion(500.0f, 180.0f);
+        setMotion(GameState.SCROLL_SPEED, 180.0f);
     }
 
     @Override

@@ -30,7 +30,6 @@ import com.ray3k.bobby.states.GameState;
 
 public class ObstacleEntity extends Entity {
     private final GameState gameState;
-    private boolean createOnDeath;
     
     public ObstacleEntity (GameState gameState) {
         super(gameState.getManager(), gameState.getCore());
@@ -39,17 +38,15 @@ public class ObstacleEntity extends Entity {
     
     @Override
     public void create() {
-        createOnDeath = true;
         setDepth(100);
-        setMotion(500.0f, 180.0f);
+        setMotion(GameState.SCROLL_SPEED, 180.0f);
         setCheckingCollisions(true);
     }
 
     @Override
     public void act(float delta) {
-        if (createOnDeath && getX() < -getTextureRegion().getRegionWidth() - GameState.OBSTACLE_GAP) {
+        if (getX() < -getTextureRegion().getRegionWidth() - GameState.OBSTACLE_GAP) {
             dispose();
-            gameState.createObstaclePair();
         }
     }
 
@@ -64,13 +61,4 @@ public class ObstacleEntity extends Entity {
     @Override
     public void collision(Entity other) {
     }
-
-    public boolean isCreateOnDeath() {
-        return createOnDeath;
-    }
-
-    public void setCreateOnDeath(boolean createOnDeath) {
-        this.createOnDeath = createOnDeath;
-    }
-
 }
