@@ -30,6 +30,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
 import static com.ray3k.bobby.Core.DATA_PATH;
+import com.ray3k.bobby.entities.CoinEntity;
 import com.ray3k.bobby.entities.ObstacleEntity;
 import com.ray3k.bobby.states.GameState;
 
@@ -52,6 +53,10 @@ public class ObstacleManager extends Entity {
         obstacle.setTextureRegion(obstacleTexture);
         obstacle.getCollisionBox().setSize(obstacle.getTextureRegion().getRegionWidth(), obstacle.getTextureRegion().getRegionHeight());
         obstacles.add(obstacle);
+        
+        CoinEntity coin = new CoinEntity(gameState);
+        coin.getCollisionBox().setSize(obstacleTexture.getRegionWidth(), GameState.GAP_HEIGHT);
+        coin.setPosition(Gdx.graphics.getWidth(), yPos + obstacleTexture.getRegionHeight());
         
         obstacle = new ObstacleEntity(gameState);
         obstacle.setPosition(Gdx.graphics.getWidth(), yPos + GameState.GAP_HEIGHT + obstacleTexture.getRegionHeight());

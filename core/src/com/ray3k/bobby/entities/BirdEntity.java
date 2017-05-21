@@ -64,6 +64,15 @@ public class BirdEntity extends Entity implements InputManager.FlapListener {
 
     @Override
     public void act(float delta) {
+        if (getY() + getTextureRegion().getRegionHeight() > Gdx.graphics.getHeight()) {
+            setY(Gdx.graphics.getHeight() - getTextureRegion().getRegionHeight());
+            setYspeed(0.0f);
+        }
+        
+        if (getY() + getTextureRegion().getRegionHeight() < 0) {
+            dispose();
+        }
+        
         if (flying) {
             float percent = (getYspeed() + 1000) / 800;
             percent = MathUtils.clamp(percent, 0.0f, 1.0f);
@@ -80,14 +89,25 @@ public class BirdEntity extends Entity implements InputManager.FlapListener {
 
     @Override
     public void destroy() {
-        hit.play();
+        hit.play(.5f);
         gameState.getInputManager().removeFlapListener(this);
     }
 
     @Override
     public void collision(Entity other) {
         if (other instanceof GroundEntity || other instanceof ObstacleEntity) {
+            CorpseEntity corpse = new CorpseEntity(gameState);
+            corpse.setTextureRegion(getTextureRegion());
+            corpse.setMotion(getSpeed(), getDirection());
+            corpse.setPosition(getX(), getY());
+            corpse.setOffsetX(getOffsetX());
+            corpse.setOffsetY(getOffsetY());
+            corpse.setRotation(getRotation());
             dispose();
+        } else if (other instanceof CoinEntity) {
+            coin.play(.5f);
+            other.dispose();
+            gameState.addScore(1);
         }
     }
 
@@ -95,7 +115,7 @@ public class BirdEntity extends Entity implements InputManager.FlapListener {
     public void flapPressed() {
         setMotion(525.0f, 90.0f);
         setGravity(1500.0f, 270.0f);
-        jump.play();
+        jump.play(.5f);
         flying = true;
     }
 }

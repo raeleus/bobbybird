@@ -42,3 +42,11 @@ java.lang.NullPointerException
 	at com.ray3k.bobby.Core.render(Core.java:133)
 	at com.badlogic.gdx.backends.lwjgl.LwjglApplication.mainLoop(LwjglApplication.java:225)
 	at com.badlogic.gdx.backends.lwjgl.LwjglApplication$1.run(LwjglApplication.java:126)
+java.lang.NullPointerException
+	at com.ray3k.bobby.entities.CorpseEntity.act(CorpseEntity.java:43)
+	at com.ray3k.bobby.EntityManager.act(EntityManager.java:60)
+	at com.ray3k.bobby.states.GameState.act(GameState.java:173)
+	at com.ray3k.bobby.StateManager.act(StateManager.java:52)
+	at com.ray3k.bobby.Core.render(Core.java:133)
+	at com.badlogic.gdx.backends.lwjgl.LwjglApplication.mainLoop(LwjglApplication.java:225)
+	at com.badlogic.gdx.backends.lwjgl.LwjglApplication$1.run(LwjglApplication.java:126)

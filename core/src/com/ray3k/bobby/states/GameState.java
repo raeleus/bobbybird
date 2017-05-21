@@ -40,6 +40,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
@@ -53,6 +54,7 @@ import com.ray3k.bobby.ObstacleManager;
 import com.ray3k.bobby.State;
 import com.ray3k.bobby.entities.BirdEntity;
 import com.ray3k.bobby.entities.GroundEntity;
+import com.ray3k.bobby.entities.PropEntity;
 
 public class GameState extends State implements FlapListener {
     public static final float OBSTACLE_GAP = 400.0f;
@@ -70,6 +72,8 @@ public class GameState extends State implements FlapListener {
     private Skin skin;
     private Table table;
     private int score;
+    private static int highscore = 0;
+    private Label scoreLabel;
     private EntityManager manager;
     private OrthographicCamera camera;
     private Viewport viewport;
@@ -121,7 +125,30 @@ public class GameState extends State implements FlapListener {
         for (int x = 0; x < Gdx.graphics.getWidth() + groundTexture.getRegionWidth(); x += groundTexture.getRegionWidth()) {
             GroundEntity ground = new GroundEntity(this);
             ground.setTextureRegion(groundTexture);
+            ground.getCollisionBox().setSize(ground.getTextureRegion().getRegionWidth(), ground.getTextureRegion().getRegionHeight());
+            ground.setCheckingCollisions(true);
             ground.setPosition(x, 0.0f);
+        }
+        
+        for (int x = 0; x < Gdx.graphics.getWidth(); x += buildingTexture.getRegionWidth()) {
+            PropEntity prop = new PropEntity(this);
+            prop.setTextureRegion(buildingTexture);
+            prop.setPosition(x, groundTexture.getRegionHeight());
+            prop.setDepth(10000);
+        }
+        
+        for (int x = 0; x < Gdx.graphics.getWidth(); x += bushTexture.getRegionWidth()) {
+            PropEntity prop = new PropEntity(this);
+            prop.setTextureRegion(bushTexture);
+            prop.setPosition(x, groundTexture.getRegionHeight());
+            prop.setDepth(1000);
+        }
+        
+        for (int x = 0; x < Gdx.graphics.getWidth(); x += cloudTexture.getRegionWidth()) {
+            PropEntity prop = new PropEntity(this);
+            prop.setTextureRegion(cloudTexture);
+            prop.setPosition(x, groundTexture.getRegionHeight() + buildingTexture.getRegionHeight() / 2.0f);
+            prop.setDepth(100000);
         }
     }
     
@@ -176,11 +203,12 @@ public class GameState extends State implements FlapListener {
 
     @Override
     public void dispose() {
+        stage.dispose();
     }
 
     @Override
     public void stop() {
-        stage.dispose();
+        
     }
     
     @Override
@@ -250,14 +278,47 @@ public class GameState extends State implements FlapListener {
     private void showScore() {
         table.clear();
         
-        Label label = new Label(Integer.toString(score), skin, "score");
-        label.setColor(1.0f, 1.0f, 1.0f, 0.0f);
-        table.add(label).padTop(30.0f).expandY().top();
+        scoreLabel = new Label(Integer.toString(score), skin, "score");
+        scoreLabel.setColor(1.0f, 1.0f, 1.0f, 0.0f);
+        table.add(scoreLabel).padTop(30.0f).expandY().top();
         
         AlphaAction alphaAction = new AlphaAction();
         alphaAction.setAlpha(1.0f);
         alphaAction.setDuration(.5f);
-        label.addAction(alphaAction);
+        scoreLabel.addAction(alphaAction);
+    }
+    
+    public void showGameOver() {
+        table.clear();
+        
+        Label label = new Label("GAME\nOVER", skin, "game-over");
+        label.setAlignment(Align.center);
+        table.add(label).colspan(2);
+        
+        table.row();
+        label = new Label("Score\n\n" + score, skin, "score");
+        label.setAlignment(Align.center);
+        table.add(label).spaceRight(100.0f);
+        
+        label = new Label("High\nScore\n" + highscore, skin, "score");
+        label.setAlignment(Align.center);
+        table.add(label);
+        
+        table.row();
+        label = new Label("Press Space...", skin, "score");
+        label.setAlignment(Align.center);
+        table.add(label).colspan(2);
+        
+        stage.addListener(new InputListener() {
+            @Override
+            public boolean keyDown(InputEvent event, int keycode) {
+                if (keycode == Keys.SPACE) {
+                    stage.removeListener(this);
+                    getCore().getStateManager().loadState("menu");
+                }
+                return true;
+            }
+        });
     }
 
     public EntityManager getManager() {
@@ -278,5 +339,25 @@ public class GameState extends State implements FlapListener {
 
     public TextureRegion getGroundTexture() {
         return groundTexture;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+        scoreLabel.setText(Integer.toString(score));
+        if (score > highscore) {
+            highscore = score;
+        }
+    }
+    
+    public void addScore(int score) {
+        this.score += score;
+        scoreLabel.setText(Integer.toString(this.score));
+        if (this.score > highscore) {
+            highscore = this.score;
+        }
     }
 }
