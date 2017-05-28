@@ -26,6 +26,7 @@ package com.ray3k.bobby.states;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -42,6 +43,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.JsonReader;
+import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -238,7 +241,11 @@ public class GameState extends State implements FlapListener {
         final Table subTable = new Table();
         table.add(subTable);
         
-        Label label = new Label("Get Ready!", skin, "get-ready");
+        FileHandle fileHandle = Gdx.files.local(Core.DATA_PATH + "/data.json");
+        JsonReader reader = new JsonReader();
+        JsonValue val = reader.parse(fileHandle);
+        
+        Label label = new Label(val.getString("ready"), skin, "get-ready");
         subTable.add(label).colspan(3).padBottom(50.0f);
         
         subTable.row();
@@ -297,21 +304,25 @@ public class GameState extends State implements FlapListener {
     public void showGameOver() {
         table.clear();
         
-        Label label = new Label("GAME\nOVER", skin, "game-over");
+        FileHandle fileHandle = Gdx.files.local(Core.DATA_PATH + "/data.json");
+        JsonReader reader = new JsonReader();
+        JsonValue val = reader.parse(fileHandle);
+        
+        Label label = new Label(val.getString("gameover"), skin, "game-over");
         label.setAlignment(Align.center);
         table.add(label).colspan(2);
         
         table.row();
-        label = new Label("Score\n\n" + score, skin, "score");
+        label = new Label(val.getString("score") + score, skin, "score");
         label.setAlignment(Align.center);
         table.add(label).spaceRight(100.0f);
         
-        label = new Label("High\nScore\n" + highscore, skin, "score");
+        label = new Label(val.getString("highscore") + highscore, skin, "score");
         label.setAlignment(Align.center);
         table.add(label);
         
         table.row();
-        label = new Label("Press Space...", skin, "score");
+        label = new Label(val.getString("space"), skin, "score");
         label.setAlignment(Align.center);
         table.add(label).colspan(2);
         

@@ -1,5 +1,8 @@
 {
 	"title": "Bobby Bird",
-	"ready": "Get Ready",
-	"gameover": "Game Over"
+	"ready": "Get Ready!",
+	"gameover": "Game\nOver",
+	"score": "\nScore\n",
+	"highscore": "High\nScore\n",
+	"space": "Press Space..."
 }

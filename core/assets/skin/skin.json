@@ -32,6 +32,18 @@ com.badlogic.gdx.graphics.Color: {
 		b: 0
 		a: 0.49803922
 	}
+	over: {
+		r: 0.16326666
+		g: 0.7609094
+		b: 0.79
+		a: 1
+	}
+	selected: {
+		r: 0
+		g: 0.13077807
+		b: 1
+		a: 1
+	}
 	sky: {
 		r: 0
 		g: 0.44313726
@@ -47,6 +59,14 @@ com.badlogic.gdx.scenes.scene2d.ui.Skin$TintedDrawable: {
 	dialog-background: {
 		name: white
 		color: dialog-background
+	}
+	selected: {
+		name: white
+		color: selected
+	}
+	over: {
+		name: white
+		color: over
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle: {
@@ -74,6 +94,8 @@ com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton$ImageTextButtonStyle: {
 	}
 	list: {
 		font: font
+		over: over
+		checked: selected
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
