@@ -91,6 +91,7 @@ public class BirdEntity extends Entity implements InputManager.FlapListener {
     public void destroy() {
         hit.play(.5f);
         gameState.getInputManager().removeFlapListener(this);
+        new WhiteFlashEntity(gameState);
     }
 
     @Override

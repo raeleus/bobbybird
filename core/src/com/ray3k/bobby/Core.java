@@ -222,6 +222,8 @@ public class Core extends ApplicationAdapter {
             }
         }
         
+        assetManager.load(DATA_PATH + "/gfx/white.png", Pixmap.class);
+        
         assetManager.load(DATA_PATH + "/sfx/coin.wav", Sound.class);
         assetManager.load(DATA_PATH + "/sfx/hit.wav", Sound.class);
         assetManager.load(DATA_PATH + "/sfx/jump.wav", Sound.class);

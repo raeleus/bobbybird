@@ -128,6 +128,9 @@ public class LoadingState extends State {
                 getCore().getPixmapPacker().pack(file.nameWithoutExtension(), getCore().getAssetManager().get(file.path(), Pixmap.class));
             }
         }
+        
+        getCore().getPixmapPacker().pack("white", getCore().getAssetManager().get(Core.DATA_PATH + "/gfx/white.png", Pixmap.class));
+        
         TextureAtlas atlas = getCore().getPixmapPacker().generateTextureAtlas(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear, false);
         getCore().setAtlas(atlas);
     }
